@@ -1,0 +1,105 @@
+{
+  "project_name": "PEFT_LLM_Comparison_Study",
+  "drive_root": "/content/drive/MyDrive/PEFT_LLM_Comparison_Study",
+  "models": {
+    "primary": "Qwen/Qwen2.5-7B-Instruct",
+    "secondary": "meta-llama/Llama-3.1-8B-Instruct"
+  },
+  "seeds": [
+    42,
+    1024,
+    2025
+  ],
+  "tasks": {
+    "esg": {
+      "description": "Financial/ESG Domain Multi-Class Classification (Environmental, Social, Governance)",
+      "datasets": [
+        {
+          "name": "ESGBERT/environmental_2k",
+          "label_name": "Environmental"
+        },
+        {
+          "name": "ESGBERT/social_2k",
+          "label_name": "Social"
+        },
+        {
+          "name": "ESGBERT/governance_2k",
+          "label_name": "Governance"
+        }
+      ],
+      "labels": [
+        "Environmental",
+        "Social",
+        "Governance"
+      ],
+      "max_seq_length": 384,
+      "num_epochs": 3
+    },
+    "folio": {
+      "description": "Multi-Step Deductive Logical Reasoning (True, False, Unknown)",
+      "dataset_name": "yale-nlp/FOLIO",
+      "labels": [
+        "True",
+        "False",
+        "Unknown"
+      ],
+      "max_seq_length": 768,
+      "num_epochs": 3
+    }
+  },
+  "methods": {
+    "zero_shot": {
+      "type": "baseline"
+    },
+    "qlora": {
+      "type": "peft",
+      "load_in_4bit": true,
+      "use_dora": false,
+      "r": 16,
+      "lora_alpha": 32,
+      "lora_dropout": 0.05,
+      "lr": 0.0002
+    },
+    "lora": {
+      "type": "peft",
+      "load_in_4bit": false,
+      "use_dora": false,
+      "r": 16,
+      "lora_alpha": 32,
+      "lora_dropout": 0.05,
+      "lr": 0.0002
+    },
+    "dora": {
+      "type": "peft",
+      "load_in_4bit": false,
+      "use_dora": true,
+      "r": 16,
+      "lora_alpha": 32,
+      "lora_dropout": 0.05,
+      "lr": 0.0002
+    },
+    "full_ft": {
+      "type": "full",
+      "load_in_4bit": false,
+      "lr": 2e-05
+    }
+  },
+  "target_modules": [
+    "q_proj",
+    "k_proj",
+    "v_proj",
+    "o_proj",
+    "gate_proj",
+    "up_proj",
+    "down_proj"
+  ],
+  "training_defaults": {
+    "per_device_train_batch_size": 4,
+    "gradient_accumulation_steps": 4,
+    "warmup_ratio": 0.05,
+    "lr_scheduler_type": "cosine",
+    "weight_decay": 0.01,
+    "bf16": true,
+    "gradient_checkpointing": true
+  }
+}

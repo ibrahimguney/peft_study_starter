@@ -1,0 +1,43 @@
+{
+  "rank_ablation": {
+    "ranks": [
+      8,
+      16,
+      32
+    ],
+    "alpha_multiplier": 2,
+    "methods": [
+      "lora",
+      "dora"
+    ],
+    "tasks": [
+      "esg",
+      "folio"
+    ],
+    "seeds": [
+      42,
+      1024,
+      2025
+    ]
+  },
+  "multi_seed_full": {
+    "seeds": [
+      1024,
+      2025
+    ],
+    "models": [
+      "primary",
+      "secondary"
+    ],
+    "methods": [
+      "qlora",
+      "lora",
+      "dora",
+      "full_ft"
+    ],
+    "tasks": [
+      "esg",
+      "folio"
+    ]
+  }
+}
